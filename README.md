@@ -107,8 +107,9 @@ class ProveedorCommand {
 }
 class Formulario {
     <<interface>>
-+Preguntas: List < Pregunta >
-+void: addPregunta(Pregunta)
+   -Coleccion < Pregunta> PreguntasSinResponder
+   +Coleccion < Pregunta> PreguntasRespondidas
+   +void: addPregunta(Pregunta)
 +void: ResponderFormulario()
 }
 
@@ -153,21 +154,27 @@ class Pregunta {
 
 class FormularioDecorator {
     <<interface>>
-        - formulario: Formulario
+        -Coleccion < Pregunta> PreguntasSinResponder
+        +Coleccion < Pregunta> PreguntasRespondidas
+        - Formulario: formulario
         + void: addPregunta(Pregunta)
         + void: ResponderFormulario()
 
     }
 
     class ScrollDecorator {
-        - formulario: Formulario
+        -Coleccion < Pregunta> PreguntasSinResponder
+        +Coleccion < Pregunta> PreguntasRespondidas
+        - Formulario: formulario
         + void: addPregunta(Pregunta)
         + void: ResponderFormulario()
 
     }
 
     class ResaltadoDecorator {
-        - formulario: Formulario
+        -Coleccion < Pregunta> PreguntasSinResponder
+        +Coleccion < Pregunta> PreguntasRespondidas
+        - Formulario: formulario
         - bordeColor: string
         - bordeGrosor: int
         + void: addPregunta(Pregunta)
