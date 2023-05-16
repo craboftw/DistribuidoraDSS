@@ -181,8 +181,6 @@ class ResaltadoDecorator {
     +ResponderFormulario(): void
 }
 
-Command <|-- DevolucionCommand
-Command <|-- ProveedorCommand
 
 Formulario --> FormularioDecorator
 FormularioDecorator --> ScrollDecorator
