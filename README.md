@@ -80,120 +80,119 @@ El patrón Decorator se compone de las siguientes clases:
 Estos decoradores se pueden aplicar a los formularios según sus necesidades. Por ejemplo, un formulario largo puede usar el `ScrollDecorator` para agregar una barra de desplazamiento, mientras que un formulario importante o urgente puede utilizar el `ResaltadoDecorator` para resaltarlo visualmente.
 
 ```mermaid
-
 classDiagram
 
 class Command {
-<<Interface>>
-+execute()
+    <<Interface>>
+    +execute()
 }
+
 class DevolucionCommand {
-+DevolucionCommand(Formulario: Formulario)
-+void: execute()
+    +DevolucionCommand(Formulario: formulario)
+    +execute(): void
 }
+
 class ExecutorCommands {
-    - Collection< Formulario>: formularios
-    + void: Trigger()
+    -formularios: Collection<Formulario>
+    +Trigger(): void
 }
 
 class ProcesarPedidoCommand {
     +GetPedido(PreguntaPedidoDTO)
-    +void: execute()
-    -List<PreguntaPedidoDTO> PedidosPorProcesar
-}
-class ProveedorCommand {
-+ProveedorCommand(Formulario: Formulario)
-+void: execute()
-}
-class Formulario {
-    <<interface>>
-   -Coleccion < Pregunta> PreguntasSinResponder
-   +Coleccion < Pregunta> PreguntasRespondidas
-   +void: addPregunta(Pregunta)
-+void: ResponderFormulario()
+    +execute(): void
+    -PedidosPorProcesar: List<PreguntaPedidoDTO>
 }
 
-class PreguntaPedidoDTO{
-+Responder()
-+getDTOpedido()
--String producto
--int cantidad
--String destinatario
+class ProveedorCommand {
+    +ProveedorCommand(Formulario: Formulario)
+    +execute(): void
+}
+
+class Formulario {
+    <<interface>>
+    -PreguntasSinResponder: Collection<Pregunta>
+    +PreguntasRespondidas: Collection<Pregunta>
+    +addPregunta(Pregunta): void
+    +ResponderFormulario(): void
+}
+
+class PreguntaPedidoDTO {
+    +Responder(): void
+    +getDTOpedido()
+    -producto: String
+    -cantidad: int
+    -destinatario: String
 }
 
 class Pedido {
--String: productos
--int: cantidad
--String: destinatario
--float: costeTotal
--int: IdProveedor
--String: Estado
+    -productos: String
+    -cantidad: int
+    -destinatario: String
+    -costeTotal: float
+    -IdProveedor: int
+    -Estado: String
 }
 
 class FormularioPedido {
-    -Coleccion < PreguntaPedidoDTO> PreguntasSinResponder
-    +Coleccion < PreguntaPedidoDTO> PreguntasRespondidas
-    +void addPregunta(PreguntaPedidoDTO)
-    +void: ResponderFormulario()
+    -PreguntasSinResponder: Collection<PreguntaPedidoDTO>
+    +PreguntasRespondidas: Collection<PreguntaPedidoDTO>
+    +addPregunta(PreguntaPedidoDTO): void
+    +ResponderFormulario(): void
 }
 
-class PreguntaPedidoDTOFactory{
-    +PreguntaPedidoDTO CrearPregunta()
+class PreguntaPedidoDTOFactory {
+    +CrearPregunta(): PreguntaPedidoDTO
 }
 
-class PreguntaFactory{
+class PreguntaFactory {
     <<Interface>>
-    +Pregunta CrearPregunta()
+    +CrearPregunta(): Pregunta
 }
 
 class Pregunta {
-   <<interface>>
-+void: Responder()
+    <<interface>>
+    +Responder(): void
 }
-
 
 class FormularioDecorator {
     <<interface>>
-        -Coleccion < Pregunta> PreguntasSinResponder
-        +Coleccion < Pregunta> PreguntasRespondidas
-        - Formulario: formulario
-        + void: addPregunta(Pregunta)
-        + void: ResponderFormulario()
+    -PreguntasSinResponder: Collection<Pregunta>
+    +PreguntasRespondidas: Collection<Pregunta>
+    -Formulario: formulario
+    +addPregunta(Pregunta): void
+    +ResponderFormulario(): void
+}
 
-    }
+class ScrollDecorator {
+    -PreguntasSinResponder: Collection<Pregunta>
+    +PreguntasRespondidas: Collection<Pregunta>
+    -Formulario: formulario
+    +addPregunta(Pregunta): void
+    +ResponderFormulario(): void
+}
 
-    class ScrollDecorator {
-        -Coleccion < Pregunta> PreguntasSinResponder
-        +Coleccion < Pregunta> PreguntasRespondidas
-        - Formulario: formulario
-        + void: addPregunta(Pregunta)
-        + void: ResponderFormulario()
+class ResaltadoDecorator {
+    -PreguntasSinResponder: Collection<Pregunta>
+    +PreguntasRespondidas: Collection<Pregunta>
+    -Formulario: formulario
+    -bordeColor: String
+    -bordeGrosor: int
+    +addPregunta(Pregunta): void
+    +ResponderFormulario(): void
+}
 
-    }
+Command <|-- DevolucionCommand
+Command <|-- ProveedorCommand
 
-    class ResaltadoDecorator {
-        -Coleccion < Pregunta> PreguntasSinResponder
-        +Coleccion < Pregunta> PreguntasRespondidas
-        - Formulario: formulario
-        - bordeColor: string
-        - bordeGrosor: int
-        + void: addPregunta(Pregunta)
-        + void: ResponderFormulario()
-    }
-
-
-%%%Command <|-- AlmacenCommand
-%%%Command <|-- ProveedorCommand
-
-    Formulario --> FormularioDecorator
-    FormularioDecorator --> ScrollDecorator
-    FormularioDecorator --> ResaltadoDecorator
+Formulario --> FormularioDecorator
+FormularioDecorator --> ScrollDecorator
+FormularioDecorator --> ResaltadoDecorator
 
 Command --> Formulario
 Formulario --> PreguntaFactory
 PreguntaFactory <-- Pregunta
 
-ExecutorCommands--> Command
+ExecutorCommands --> Command
 DevolucionCommand ..> Command
 ProveedorCommand ..> Command
 ProcesarPedidoCommand ..> Command
@@ -201,9 +200,9 @@ ProcesarPedidoCommand ..> Command
 Pedido --> ProcesarPedidoCommand
 ProcesarPedidoCommand --> FormularioPedido
 PreguntaPedidoDTOFactory --> PreguntaPedidoDTO
-FormularioPedido -->PreguntaPedidoDTOFactory
-PreguntaPedidoDTO ..>Pregunta
-FormularioPedido ..>Formulario
+FormularioPedido --> PreguntaPedidoDTOFactory
+PreguntaPedidoDTO ..> Pregunta
+FormularioPedido ..> Formulario
 PreguntaPedidoDTOFactory ..> PreguntaFactory
 
 
