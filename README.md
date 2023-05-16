@@ -191,7 +191,7 @@ class FormularioDecorator {
 
 Command --> Formulario
 Formulario --> PreguntaFactory
-PreguntaFactory --> Pregunta
+PreguntaFactory <-- Pregunta
 
 ExecutorCommands--> Command
 DevolucionCommand ..> Command
