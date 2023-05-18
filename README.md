@@ -94,7 +94,9 @@ class DevolucionCommand {
 
 class ExecutorCommands {
     -formularios: Collection<Formulario>
+    -comandos: Map<Formulario, Command>  // Asociación entre formularios y comandos
     +Trigger(): void
+    +setCommand(Formulario, Command): void  // Método para asociar formularios con comandos
 }
 
 class ProcesarPedidoCommand {
@@ -158,7 +160,7 @@ class FormularioDecorator {
     <<interface>>
     -PreguntasSinResponder: Collection<Pregunta>
     +PreguntasRespondidas: Collection<Pregunta>
-    -Formulario: formulario
+    -Formulario: Formulario
     +addPregunta(Pregunta): void
     +ResponderFormulario(): void
 }
@@ -166,7 +168,7 @@ class FormularioDecorator {
 class ScrollDecorator {
     -PreguntasSinResponder: Collection<Pregunta>
     +PreguntasRespondidas: Collection<Pregunta>
-    -Formulario: formulario
+    -Formulario: Formulario  
     +addPregunta(Pregunta): void
     +ResponderFormulario(): void
 }
@@ -174,7 +176,7 @@ class ScrollDecorator {
 class ResaltadoDecorator {
     -PreguntasSinResponder: Collection<Pregunta>
     +PreguntasRespondidas: Collection<Pregunta>
-    -Formulario: formulario
+    -Formulario: Formulario 
     -bordeColor: String
     -bordeGrosor: int
     +addPregunta(Pregunta): void
@@ -204,4 +206,15 @@ FormularioPedido ..> Formulario
 PreguntaPedidoDTOFactory ..> PreguntaFactory
 
 
+
 ```
+
+
+**Fe de Erratas:**
+
+En respuesta a la crítica recibida por parte del profesor, se ha realizado una revisión de la solución propuesta. A continuación, se presentan las mejoras realizadas para abordar las preocupaciones planteadas:
+
+1. **Escalabilidad del `ExecutorCommands` y Asociacion entre los `Formularios` y su debido `Command`:** Se ha propuesto un enfoque basado en la reflexión o metadatos para abordar el `ExecutorCommands`. Este enfoque permitiría descubrir automáticamente los comandos disponibles en el sistema, evitando la necesidad de modificar directamente el `ExecutorCommands` cada vez que se añada un nuevo comando. Esto proporciona una solución más escalable y adaptable a futuras incorporaciones de comandos.
+
+3. **Mejora del patrón Decorator:** Se ha reconocido que el patrón Decorator presentaba una falta de relación de herencia o agregación en el diagrama de clases proporcionado. Como resultado, se ha mejorado el diseño del patrón Decorator estableciendo una relación de herencia o agregación entre la clase `FormularioDecorator` y los decoradores concretos (`ScrollDecorator` y `ResaltadoDecorator`). Además, se ha sugerido la adición de métodos específicos en los decoradores concretos para agregar las funcionalidades adicionales de cada decorador, lo que proporciona una estructura más coherente y extensible.
+
