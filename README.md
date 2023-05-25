@@ -79,7 +79,7 @@ El patrón Decorator se compone de las siguientes clases:
 
 Estos decoradores se pueden aplicar a los formularios según sus necesidades. Por ejemplo, un formulario largo puede usar el `ScrollDecorator` para agregar una barra de desplazamiento, mientras que un formulario importante o urgente puede utilizar el `ResaltadoDecorator` para resaltarlo visualmente.
 
-![Diagrama](/diagrama.png)
+![Diagrama](/DiagramaArreglado.png)
 
 
 **Fe de Erratas:**
